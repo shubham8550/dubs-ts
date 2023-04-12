@@ -1,0 +1,21 @@
+{
+  "name": "dubs-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/speech": "^5.4.0",
+    "@google-cloud/storage": "^6.9.5",
+    "@types/ffmpeg": "^1.0.4",
+    "@types/node": "^18.15.11",
+    "ffmpeg": "^0.0.4",
+    "os": "^0.1.2",
+    "uuid": "^9.0.0",
+    "whisper-node": "^0.1.5"
+  }
+}
