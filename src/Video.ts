@@ -18,9 +18,10 @@ export class Video {
     if (typeof bufferOrPath === 'string') {
       // If a file path was provided, copy the file to the temporary directory
       const filename = path.basename(bufferOrPath);
-      fs.copyFileSync(bufferOrPath, path.join(tempDir, filename));
+      this.filepath =path.join(tempDir, `video-${uuidv4()}_${filename}`)
+      fs.copyFileSync(bufferOrPath,this.filepath );
 
-      this.filepath = path.join(tempDir, filename);
+      
     } else {
       // If a buffer was provided, create a temporary file in the temporary directory
       const extension = bufferOrPath.slice(4, 8).toString('utf8') === 'ftyp' ? 'mp4' : 'mov';
@@ -39,8 +40,13 @@ export class Video {
   }
 
   async extractAudio(): Promise<Audio> {
-    const audioPath = path.join(path.dirname(this.filepath), `${path.parse(this.filename).name}.mp3`);
-    const ffmpeg = spawn('ffmpeg', ['-i', this.filepath, '-vn', '-acodec', 'libmp3lame', '-q:a', '0', audioPath]);
+    const audioPath = path.join(path.dirname(this.filepath), `temp-audio-${path.parse(this.filename).name}.mp3`);
+    fs.exists(audioPath, function(exists) {
+      if(exists) {
+        fs.unlinkSync(audioPath);
+      } 
+    });
+    const ffmpeg = spawn('ffmpeg', ['-i', this.filepath, '-vn', '-acodec', 'libmp3lame', '-q:a', '0', '-f', 'mp3', audioPath]);
     return new Promise((resolve, reject) => {
       ffmpeg.on('exit', (code, signal) => {
         if (code !== 0) {

@@ -18,9 +18,10 @@ export class Audio {
     if (typeof bufferOrPath === 'string') {
       // If a file path was provided, copy the file to the temporary directory
       const filename = path.basename(bufferOrPath);
-      fs.copyFileSync(bufferOrPath, path.join(tempDir, filename));
+      this.filepath = path.join(tempDir,  `audio-${uuidv4()}_${filename}`);
 
-      this.filepath = path.join(tempDir, filename);
+      fs.copyFileSync(bufferOrPath, this.filepath);
+
     } else {
       // If a buffer was provided, create a temporary file in the temporary directory
       const extension = bufferOrPath.slice(0, 2).toString('utf8') === 'RI' ? 'wav' : 'mp3';
@@ -37,7 +38,7 @@ export class Audio {
     return fs.readFileSync(this.filepath);
   }
 
-  get mp3(): Promise<Buffer> | Buffer {
+  mp3(): Promise<Buffer> | Buffer {
     if (this.fileext === 'mp3') {
       // If the file is already in MP3 format, return its contents
       return fs.readFileSync(this.filepath);
@@ -57,7 +58,7 @@ export class Audio {
     }
   }
 
-  get wav(): Promise<Buffer> | Buffer {
+   wav(): Promise<Buffer> | Buffer {
     if (this.fileext === 'wav') {
       // If the file is already in WAV format, return its contents
       return fs.readFileSync(this.filepath);
@@ -75,6 +76,48 @@ export class Audio {
         });
       }
 
+    }
+    wavAudio(): Promise<Audio> | Audio {
+      if (this.fileext === 'wav') {
+        // If the file is already in WAV format, return its contents
+        return this
+      } else {  // If the file is not in WAV format, convert it to WAV format and return the converted contents
+          const wavPath = path.join(path.dirname(this.filepath), `${path.parse(this.filename).name}.wav`);
+          fs.exists(wavPath, function(exists) {
+            if(exists) {
+              fs.unlinkSync(wavPath);
+            } 
+          });
+
+          const ffmpeg = spawn('ffmpeg', ['-i', this.filepath, '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '1', wavPath]);
+          return new Promise((resolve, reject) => {
+            ffmpeg.on('exit', (code, signal) => {
+              if (code !== 0) {
+                reject(new Error(`Failed to convert audio to WAV format (code ${code}, signal ${signal}).`));
+              } else {
+                resolve(new Audio(wavPath));
+              }
+            });
+          });
+        }
+  
+      }
+
+     sampleRate(): Promise<number> | number {
+      const ffprobe = spawn('ffprobe', ['-v', '0', '-show_entries', 'stream=sample_rate', '-of', 'default=noprint_wrappers=1:nokey=1', this.filepath]);
+      return new Promise((resolve, reject) => {
+        let sampleRate = 0;
+        ffprobe.stdout.on('data', (data) => {
+          sampleRate = parseInt(data.toString().trim());
+        });
+        ffprobe.on('exit', (code, signal) => {
+          if (code !== 0) {
+            reject(new Error(`Failed to get sample rate (code ${code}, signal ${signal}).`));
+          } else {
+            resolve(sampleRate);
+          }
+        });
+      });
     }
 
       
