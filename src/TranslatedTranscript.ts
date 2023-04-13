@@ -43,11 +43,11 @@ export class TranslatedTranscript {
 }
 
 
-// const main = async () => {
-//     const aud = new TranslatedTranscript('hi','en')
-//     console.log(await aud.translateTranscript(SAMPLETESTRAWTRANSCRIPT))
-// }
+const main = async () => {
+  const aud = new TranslatedTranscript('hi','en')
+  console.log(await aud.translateTranscript(SAMPLETESTRAWTRANSCRIPT))
+}
 
-// if (require.main) {
-//     main()
-// }
+if (require.main === module) {
+  main()
+}
