@@ -4,3 +4,4 @@ dist/**/*
 .env
 key.json
 temp/**/*
+results/longform/dubber/**
