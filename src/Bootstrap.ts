@@ -21,7 +21,8 @@ class Bootstrap {
     start = async () => {
         this.user_video = new Video(path.join('./sample.mp4'))
         this.user_audio = await this.user_video.extractAudio()
-        this.transcript= 
+        this.transcript= new Transcript(this.user_audio)
+        console.log(await this.transcript.generateDiarizedTranscript())
     }
 }
 

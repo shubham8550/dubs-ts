@@ -105,6 +105,6 @@ const main = async () => {
     console.log(await aud.generateDiarizedTranscript())
 }
 
-if (require.main) {
+if (require.main === module) {
     main()
 }
