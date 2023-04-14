@@ -193,13 +193,16 @@ export class Audio {
       }
 }
 
-// const main=async ()=>{
-// let aud= new Audio(path.join("./cloned-raw.wav"))
-//  console.log((await aud.slowDownAudio(18)).filepath);
+const main=async ()=>{
+let aud= new Audio(path.join("./cloned-raw.wav"))
+ console.log((await aud.slowDownAudio(18)).filepath);
  
 
-// }
+}
 
-// main()
+if (require.main === module) {
+    main()
+  }
+  
 
 

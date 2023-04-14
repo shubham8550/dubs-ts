@@ -96,11 +96,11 @@ export class Transcript {
     }
 }
 
-// const main = async () => {
-//     const aud = new Transcript(await new Video(path.join(__dirname, '..', 'sample.mp4')).extractAudio())
-//     console.log(await aud.generateDiarizedTranscript())
-// }
+const main = async () => {
+    const aud = new Transcript(await new Video(path.join(__dirname, '..', 'sample.mp4')).extractAudio())
+    console.log(await aud.generateDiarizedTranscript())
+}
 
-// if (require.main === module) {
-//     main()
-// }
+if (require.main === module) {
+    main()
+}

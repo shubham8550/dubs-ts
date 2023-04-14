@@ -35,4 +35,6 @@ let d= new RawSplitSamples(await new Video(path.join(__dirname, '..', 'sample.mp
 
 }
 
-main()
+if (require.main === module) {
+  main()
+}
