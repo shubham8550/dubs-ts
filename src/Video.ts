@@ -69,13 +69,11 @@ export class Video {
     }
 }
 
-const main=async ()=>{
-let aud= new Video(path.join("./sample.mp4"))
- await aud.extractAudio()
-
+const main = async () => {
+    let aud = new Video(path.join('./sample.mp4'))
+    await aud.extractAudio()
 }
 
 if (require.main === module) {
     main()
 }
-

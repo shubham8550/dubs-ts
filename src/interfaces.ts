@@ -5,5 +5,5 @@ export interface IJSONWord {
     speaker_tag: number
 }
 export interface ITranslatedTranscript extends IJSONWord {
-    translated_dialog: string;
+    translated_dialog: string
 }

@@ -147,62 +147,53 @@ export class Audio {
         })
     }
 
-
-
-
     async slowDownAudio(desiredLength: number): Promise<Audio> {
-        const inputFile = this.filepath;
-        const outputFile = path.join('temp', `slowed-${this.filename}`);
-      
+        const inputFile = this.filepath
+        const outputFile = path.join('temp', `slowed-${this.filename}`)
+
         // Delete output file if it already exists
         if (fs.existsSync(outputFile)) {
-          fs.unlinkSync(outputFile);
+            fs.unlinkSync(outputFile)
         }
-      
+
         // Use FFmpeg to get duration of input file
-        const getDurationCommand = `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 ${this.filepath}`;
+        const getDurationCommand = `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 ${this.filepath}`
         const durationOutput = await new Promise<string>((resolve, reject) => {
-        exec(getDurationCommand, (error, stdout, stderr) => {
-            if (error) {
-            reject(error);
-            } else {
-            resolve(stdout.trim());
-            }
-        });
-        });
-    const currentLength = parseFloat(durationOutput);
-    console.log(`Current Duration ${currentLength} => ${desiredLength} `);
-    
-        const atempo = ( currentLength/ desiredLength);
-      console.log(`Tempo ${atempo}`);
-      
-      
-        const ffmpegCommand = `ffmpeg -i ${inputFile} -filter:a "atempo=${atempo}" ${outputFile}`;
-      
+            exec(getDurationCommand, (error, stdout, stderr) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(stdout.trim())
+                }
+            })
+        })
+        const currentLength = parseFloat(durationOutput)
+        console.log(`Current Duration ${currentLength} => ${desiredLength} `)
+
+        const atempo = currentLength / desiredLength
+        console.log(`Tempo ${atempo}`)
+
+        const ffmpegCommand = `ffmpeg -i ${inputFile} -filter:a "atempo=${atempo}" ${outputFile}`
+
         return new Promise<Audio>((resolve, reject) => {
-          exec(ffmpegCommand, (error, stdout, stderr) => {
-            if (error) {
-              reject(error);
-            } else {
-              console.log(`FFmpeg stdout: ${stdout}`);
-              console.log(`FFmpeg stderr: ${stderr}`);
-              resolve(new Audio(outputFile));
-            }
-          });
-        });
-      }
+            exec(ffmpegCommand, (error, stdout, stderr) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    console.log(`FFmpeg stdout: ${stdout}`)
+                    console.log(`FFmpeg stderr: ${stderr}`)
+                    resolve(new Audio(outputFile))
+                }
+            })
+        })
+    }
 }
 
-const main=async ()=>{
-let aud= new Audio(path.join("./cloned-raw.wav"))
- console.log((await aud.slowDownAudio(18)).filepath);
- 
-
+const main = async () => {
+    let aud = new Audio(path.join('./cloned-raw.wav'))
+    console.log((await aud.slowDownAudio(18)).filepath)
 }
 
 if (require.main === module) {
     main()
-  }
-  
-
-
+}

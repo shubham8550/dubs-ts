@@ -9,8 +9,6 @@ import { Video } from './Video'
 import { google } from '@google-cloud/speech/build/protos/protos'
 import { IJSONWord } from './interfaces'
 
-
-
 export class Transcript {
     private audio: Audio
     private storage: Storage
