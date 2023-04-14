@@ -3,7 +3,7 @@ import path from 'path'
 import { Audio } from './Audio'
 import { ITranslatedTranscript } from './interfaces'
 const fs = require('fs')
-class CloneAudioSamples {
+export class CloneAudioSamples {
     constructor(public transcript: ITranslatedTranscript[]) {}
     public start() {}
 
