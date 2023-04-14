@@ -17,6 +17,7 @@
     "@types/node": "^18.15.11",
     "dotenv": "^16.0.3",
     "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "os": "^0.1.2",
     "uuid": "^9.0.0",
     "whisper-node": "^0.1.5"

@@ -1,15 +1,9 @@
 import { Translate } from "@google-cloud/translate/build/src/v2";
 import { SAMPLETESTRAWTRANSCRIPT } from "./util";
+import { IJSONWord, ITranslatedTranscript } from "./interfaces";
 
-interface IJSONWord {
-    dialog: string
-    start_time: number
-    end_time: number
-    speaker_tag: number
-}
-export interface ITranslatedTranscript extends IJSONWord {
-  translated_dialog: string;
-}
+
+
 
 export class TranslatedTranscript {
   private readonly translate: Translate;

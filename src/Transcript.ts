@@ -7,13 +7,9 @@ import path = require('path')
 import { BUCKETNAME } from './util'
 import { Video } from './Video'
 import { google } from '@google-cloud/speech/build/protos/protos'
+import { IJSONWord } from './interfaces'
 
-interface IJSONWord {
-    dialog: string
-    start_time: number
-    end_time: number
-    speaker_tag: number
-}
+
 
 export class Transcript {
     private audio: Audio
@@ -100,11 +96,11 @@ export class Transcript {
     }
 }
 
-const main = async () => {
-    const aud = new Transcript(await new Video(path.join(__dirname, '..', 'sample.mp4')).extractAudio())
-    console.log(await aud.generateDiarizedTranscript())
-}
+// const main = async () => {
+//     const aud = new Transcript(await new Video(path.join(__dirname, '..', 'sample.mp4')).extractAudio())
+//     console.log(await aud.generateDiarizedTranscript())
+// }
 
-if (require.main === module) {
-    main()
-}
+// if (require.main === module) {
+//     main()
+// }
